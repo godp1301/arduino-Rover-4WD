@@ -124,27 +124,30 @@ int ldist = 0;
 int rdist = 0;
 
 void loop() {
-
-  look_ahead();
   
   Serial.print("Distance from nearest object is: ");
   fdist = check_distance();
   Serial.println(fdist);
-
-  if (fdist >= 30)
+ 
+  if (fdist >= 100)
+  {
+    Serial.println("Looking ahead");
+    look(AHEAD);
+    move_forward(255); 
+  }
+  else if (fdist >= 60) { 
+    Serial.println("Looking ahead");
+    look(AHEAD);
+    move_forward(200); 
+  }
+  else if (fdist >= 30)
   {
     Serial.println("Looking ahead");
     look(AHEAD);
     
     Serial.println("Moving forward");
-    move_forward(200);
+    move_forward(100);
   }
-  else
-  {
-    Serial.println("Stopping");
-    stop();
-    
-    delay(500);
     
     Serial.println("Looking left");
     look(LEFT);
@@ -170,13 +173,10 @@ void loop() {
     {
       Serial.println("Turning left");
       turn(LEFT);
-      stop();
     }
     else
     {
       Serial.println("Turning right");
       turn(RIGHT);
-      stop();
-    }
   }
 }
